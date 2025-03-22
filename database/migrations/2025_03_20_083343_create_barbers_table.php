@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('photo')->default('images/default-avatar.webp');
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ class BarberFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'photo' => null,
         ];
     }
 }
