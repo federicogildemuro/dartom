@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\Barber;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,9 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         /**
-         * Truncate the users table.
+         * Truncate tables.
          */
         DB::table('users')->truncate();
+        DB::table('barbers')->truncate();
 
         /**
          * Create a specific user with admin role.
@@ -39,5 +41,10 @@ class DatabaseSeeder extends Seeder
          * Create 10 random users with user role.
          */
         User::factory(10)->create();
+
+        /**
+         * Create 10 random barbers.
+         */
+        Barber::factory(10)->create();
     }
 }
