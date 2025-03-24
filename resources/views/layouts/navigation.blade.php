@@ -16,10 +16,25 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+                @if (Auth::user()->role == 'user')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('appointments.available')" :active="request()->routeIs('appointments.available')">
+                            {{ __('Turnos') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+
                 @if (Auth::user()->role == 'admin')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('barbers.index')" :active="request()->routeIs('barbers.index')">
                             {{ __('Barberos') }}
+                        </x-nav-link>
+                    </div>
+
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('appointments.index')" :active="request()->routeIs('appointments.index')">
+                            {{ __('Turnos') }}
                         </x-nav-link>
                     </div>
                 @endif
