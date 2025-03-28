@@ -1,25 +1,28 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+<x-app-layout>
+    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 lg:w-1/2 mx-auto p-5">
+        <h1 class="text-4xl font-bold text-yellow text-center mb-5">¿Te olvidaste tu contraseña?</h1>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+        <p class="text-center mb-5">
+            Tranqui, ingresá tu correo electrónico y te mandamos un enlace para restablecerla.
+        </p>
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4" :status="session('status')" />
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <form method="POST" action="{{ route('password.email') }}" class="w-full">
+            @csrf
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <!-- Email  -->
+            <div class="mb-5">
+                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" required
+                    autofocus />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex items-center justify-center">
+                <x-primary-button>Enviar enlace de restablecimiento</x-primary-button>
+            </div>
+        </form>
+    </section>
+</x-app-layout>

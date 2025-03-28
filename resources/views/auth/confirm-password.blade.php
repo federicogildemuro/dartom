@@ -1,27 +1,26 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
-    </div>
+<x-app-layout>
+    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 lg:w-1/2 mx-auto p-5">
+        <h1 class="text-4xl font-bold text-yellow text-center mb-5">Antes de continuar...</h1>
 
-    <form method="POST" action="{{ route('password.confirm') }}">
-        @csrf
+        <p class="text-center mb-5">
+            Como estás a punto de entrar a una sección restringida de la aplicación, necesitamos que confirmes tu
+            contraseña.
+        </p>
 
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
+        <form method="POST" action="{{ route('password.confirm') }}" class="w-full">
+            @csrf
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <!-- Password -->
+            <div class="mb-5">
+                <x-text-input id="password" class="block w-full" type="password" name="password" required
+                    autocomplete="current-password" />
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <!-- Submit Button -->
+            <div class="flex items-center justify-center">
+                <x-primary-button>Confirmar contraseña</x-primary-button>
+            </div>
+        </form>
+    </section>
+</x-app-layout>
