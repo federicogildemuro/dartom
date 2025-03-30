@@ -2,7 +2,7 @@
     style="background-image: url('{{ asset('storage/hero-background.jpg') }}'); height: 80vh;">
     <div class="absolute inset-0 bg-black opacity-50"></div>
 
-    <div class="relative h-full z-10 flex flex-col items-center justify-center gap-5 m-5 text-center">
+    <div class="relative h-full z-10 flex flex-col items-center justify-center gap-5 mx-5 mb-5 text-center">
         <h1 class="text-4xl md:text-5xl font-bold">
             Te ponés como loquita si Daro o Tommy no te responden los mensajes?
         </h1>
