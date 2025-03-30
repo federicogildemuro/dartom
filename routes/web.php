@@ -19,6 +19,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Cancel appointment
     Route::post('appointments/cancel', [AppointmentController::class, 'cancelAppointment'])
         ->name('appointments.cancel');
+    // Appointment history view
+    Route::get('appointments/history', [AppointmentController::class, 'showHistory'])
+        ->name('appointments.history');
 });
 
 // Admin routes (for authenticated users with verified email and admin role)

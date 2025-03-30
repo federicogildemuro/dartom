@@ -28,6 +28,10 @@
                         <i class="fas fa-calendar-alt"></i>
                     </x-nav-link>
 
+                    <x-nav-link :href="route('appointments.history')" :active="request()->routeIs('appointments.history')">
+                        <i class="fas fa-history"></i>
+                    </x-nav-link>
+
                     <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                         <i class="fas fa-user"></i>
                     </x-nav-link>
@@ -91,6 +95,10 @@
             @if (Auth::user()->role == 'user')
                 <x-responsive-nav-link :href="route('appointments.available')" :active="request()->routeIs('appointments.available')">
                     Turnos
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('appointments.history')" :active="request()->routeIs('appointments.history')">
+                    Historial
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">

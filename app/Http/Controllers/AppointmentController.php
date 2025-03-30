@@ -243,4 +243,17 @@ class AppointmentController extends Controller
 
         return redirect()->route('appointments.available')->with('success', 'Turno cancelado exitosamente.');
     }
+
+    public function showHistory()
+    {
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Fetch the user's appointment history
+        $appointments = Appointment::where('user_id', $user->id)
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+
+        return view('appointments.history', compact('appointments'));
+    }
 }
