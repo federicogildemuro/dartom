@@ -1,9 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h1 class="text-3xl font-semibold">Crear Barbero</h1>
-    </x-slot>
+    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 lg:w-1/2 mx-auto p-5">
+        <h1 class="text-4xl font-bold text-yellow text-center mb-5">Agregar Barbero</h1>
+        <p class="text-center mb-5">Acá podés agregar un nuevo barbero al sistema.</p>
 
-    <div class="container mx-auto p-5">
+        <!-- Show error messages -->
         @if ($errors->any())
             <div class="bg-red-100 text-red-800 border-l-4 border-red-500 p-4 mb-4">
                 <ul>
@@ -14,32 +14,42 @@
             </div>
         @endif
 
-        <form action="{{ route('barbers.store') }}" method="POST" enctype="multipart/form-data"
-            class="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto">
+        <!-- Add Barber Form -->
+        <form method="POST" enctype="multipart/form-data" action="{{ route('barbers.store') }}" class="w-full">
             @csrf
-            <div class="mb-4">
-                <label for="name" class="block font-semibold mb-1">Nombre</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}"
-                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200" required>
+
+            <!-- Name -->
+            <div class="mb-5">
+                <x-input-label for="name" :value="'Nombre'" />
+                <x-text-input id="name" class="block mt-2 w-full" type="text" name="name" :value="old('name')"
+                    required autofocus autocomplete="name" />
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
 
-            <div class="mb-4">
-                <label for="email" class="block font-semibold mb-1">Correo Electrónico</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}"
-                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200" required>
+            <!-- Email -->
+            <div class="mb-5">
+                <x-input-label for="email" :value="'Correo electrónico'" />
+                <x-text-input id="email" class="block mt-2 w-full" type="email" name="email" :value="old('email')"
+                    required autocomplete="username" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
-            <div class="mb-4">
-                <label for="photo" class="block font-semibold mb-1">Foto (opcional)</label>
-                <input type="file" id="photo" name="photo" class="w-full p-2 border border-gray-300 rounded">
+            <!-- Photo -->
+            <div class="mb-5">
+                <x-input-label for="photo" :value="'Foto (opcional)'" />
+                <input id="photo" class="block mt-2 w-full" type="file" name="photo" :value="old('photo')" />
+                <x-input-error :messages="$errors->get('photo')" class="mt-2" />
             </div>
 
-            <div class="flex space-x-2">
-                <button type="submit"
-                    class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Guardar</button>
-                <a href="{{ route('barbers.index') }}"
-                    class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Cancelar</a>
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-5 mb-5">
+                <!-- Cancel Button -->
+                <x-danger-button>
+                    <a href="{{ route('barbers.index') }}">Cancelar</a>
+                </x-danger-button>
+
+                <!-- Submit Button -->
+                <x-primary-button>Guardar</x-primary-button>
             </div>
         </form>
-    </div>
+        </div>
 </x-app-layout>
