@@ -1,10 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h1 class="text-3xl font-semibold">Editar Turno</h1>
-    </x-slot>
+    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 lg:w-1/2 mx-auto p-5">
+        <h1 class="text-4xl font-bold text-yellow text-center mb-5">Editar Turno</h1>
+        <p class="text-center mb-5">Acá podés editar la información de un turno existente.</p>
 
-    <div class="container mx-auto p-5">
-        <!-- Show errors -->
+        <!-- Show error messages -->
         @if ($errors->any())
             <div class="bg-red-100 text-red-800 border-l-4 border-red-500 p-4 mb-4">
                 <ul>
@@ -16,17 +15,16 @@
         @endif
 
         <!-- Update Appointment Form -->
-        <form action="{{ route('appointments.update', $appointment->id) }}" method="POST"
-            class="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto">
+        <form method="POST" action="{{ route('appointments.update', $appointment->id) }}" class="w-full">
             @csrf
             @method('PUT')
 
             <!-- Barber Select -->
-            <div class="mb-4">
-                <label for="barber_id" class="block font-semibold mb-1">Barbero</label>
+            <div class="mb-5">
+                <x-input-label for="barber_id" :value="'Barbero'" />
                 <select id="barber_id" name="barber_id"
-                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200" required>
-                    <option value="">Seleccione un barbero</option>
+                    class="text-black mt-2 py-2 px-4 rounded border-2 border-yellow w-full" required>
+                    <option value="">Seleccionar Barbero</option>
                     @foreach ($barbers as $barber)
                         <option value="{{ $barber->id }}" @if ($appointment->barber_id == $barber->id) selected @endif>
                             {{ $barber->name }}
@@ -36,27 +34,30 @@
             </div>
 
             <!-- Date Picker -->
-            <div class="mb-4">
-                <label for="date" class="block font-semibold mb-1">Fecha</label>
-                <input type="date" id="date" name="date" value="{{ old('date', $appointment->date) }}"
-                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200" required>
+            <div class="mb-5">
+                <x-input-label for="date" :value="'Fecha'" />
+                <input type="date" id="date" name="date"
+                    value="{{ old('date', \Carbon\Carbon::parse($appointment->date)->format('Y-m-d')) }}"
+                    class="text-black mt-2 py-2 px-4 rounded border-2 border-yellow w-full" required>
             </div>
 
             <!-- Time Picker -->
-            <div class="mb-4">
-                <label for="time" class="block font-semibold mb-1">Hora</label>
+            <div class="mb-5">
+                <x-input-label for="time" :value="'Hora'" />
                 <input type="time" id="time" name="time"
                     value="{{ old('time', \Carbon\Carbon::parse($appointment->time)->format('H:i')) }}"
-                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200" required>
+                    class="text-black mt-2 py-2 px-4 rounded border-2 border-yellow w-full" required>
             </div>
 
-            <!-- Submit Button -->
-            <div class="flex space-x-2">
-                <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-400">Guardar
-                    Cambios</button>
-                <a href="{{ route('appointments.index') }}"
-                    class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Cancelar</a>
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-5 mb-5">
+                <!-- Cancel Button -->
+                <x-danger-button>
+                    <a href="{{ route('appointments.index') }}">Cancelar</a>
+                </x-danger-button>
+
+                <!-- Submit Button -->
+                <x-primary-button>Guardar</x-primary-button>
             </div>
         </form>
-    </div>
+    </section>
 </x-app-layout>

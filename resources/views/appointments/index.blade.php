@@ -1,29 +1,35 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h1 class="text-3xl font-semibold">Lista de Turnos</h1>
-    </x-slot>
+    <section class="min-h-screen p-5" x-data="{ barber: '', user: '', date: '' }">
+        <h1 class="text-4xl font-bold text-yellow text-center mb-5">Turnos</h1>
+        <p class="text-center mb-5">Acá podés ver y gestionar todos los turnos registrados.</p>
 
-    <div class="container mx-auto p-5" x-data="{ barber: '', user: '', date: '' }">
-        <!-- Show success message -->
+        <!-- Show success or error message -->
         @if (session('success'))
             <div class="bg-green-100 text-green-800 border-l-4 border-green-500 p-4 mb-4">
                 {{ session('success') }}
             </div>
+        @elseif (session('error'))
+            <div class="bg-red-100 text-red-800 border-l-4 border-red-500 p-4 mb-4">
+                {{ session('error') }}
+            </div>
         @endif
 
-        <!-- Link to generate new appointments -->
-        <a href="{{ route('appointments.create') }}"
-            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 mb-5 inline-block">
-            Generar Turnos
-        </a>
+        <!-- Add Appointments Button -->
+        <div class="flex flex-col items-center justify-center mb-5">
+            <x-primary-button class="mb-5">
+                <a href="{{ route('appointments.create') }}">Agregar turnos</a>
+            </x-primary-button>
+        </div>
 
         <!-- Filters -->
-        <div class="mb-4">
+        <div class="flex flex-col md:flex-row items-center justify-center gap-5 mb-5">
             <!-- Barber Filter -->
             <select x-model="barber"
                 @change="window.location.href = `{{ route('appointments.index') }}?barber_id=${barber}`"
-                class="bg-gray-200 border py-2 px-4 rounded">
+                class="text-black py-2 px-4 rounded border-2 border-yellow w-2/3 md:w-1/4">
+
                 <option value="">Filtrar por Barbero</option>
+
                 @foreach ($barbers as $barberItem)
                     <option value="{{ $barberItem->id }}" @if (request('barber_id') == $barberItem->id) selected @endif>
                         {{ $barberItem->name }}
@@ -33,8 +39,10 @@
 
             <!-- User Filter -->
             <select x-model="user" @change="window.location.href = `{{ route('appointments.index') }}?user_id=${user}`"
-                class="bg-gray-200 border py-2 px-4 rounded">
+                class="text-black py-2 px-4 rounded border-2 border-yellow w-2/3 md:w-1/4">
+
                 <option value="">Filtrar por Cliente</option>
+
                 @foreach ($users as $userItem)
                     <option value="{{ $userItem->id }}" @if (request('user_id') == $userItem->id) selected @endif>
                         {{ $userItem->name }}
@@ -45,154 +53,160 @@
             <!-- Date Filter -->
             <input type="date" x-model="date"
                 @change="window.location.href = `{{ route('appointments.index') }}?date=${date}`"
-                class="bg-gray-200 border py-2 px-4 rounded" value="{{ request('date') }}">
+                class="text-black py-2 px-4 rounded border-2 border-yellow w-2/3 md:w-1/4"
+                value="{{ request('date') }}">
         </div>
 
         <!-- Show filters applied -->
-        <div class="mb-4">
+        <div class="flex flex-col items-center justify-center mb-5">
+            <!-- Show selected barber -->
             @if (request('barber_id'))
-                <span>Mostrando turnos del barbero: {{ $barbers->firstWhere('id', request('barber_id'))->name }}</span>
+                <span class="text-yellow mb-5">
+                    Mostrando turnos del barbero:{{ $barbers->firstWhere('id', request('barber_id'))->name }}
+                </span>
             @endif
+
+            <!-- Show selected user -->
             @if (request('user_id'))
-                <span>Mostrando turnos del cliente: {{ $users->firstWhere('id', request('user_id'))->name }}</span>
+                <span class="text-yellow mb-5">
+                    Mostrando turnos del cliente:{{ $users->firstWhere('id', request('user_id'))->name }}
+                </span>
             @endif
+
+            <!-- Show selected date -->
             @if (request('date'))
-                <span>Mostrando turnos del día: {{ \Carbon\Carbon::parse(request('date'))->format('d-m-Y') }}</span>
+                <span class="text-yellow mb-5">
+                    Mostrando turnos del día:{{ \Carbon\Carbon::parse(request('date'))->format('d-m-Y') }}
+                </span>
             @endif
-            </p>
+
+            <!-- Clear filters button -->
+            @if (request('barber_id') || request('date'))
+                <form action="{{ route('appointments.available') }}" method="GET">
+                    <x-primary-button>Limpiar filtros</x-primary-button>
+                </form>
+            @endif
         </div>
 
-        <!-- Clear filters button -->
-        @if (request('barber_id') || request('user_id') || request('date'))
-            <form action="{{ route('appointments.index') }}" method="GET" class="mb-4">
-                <button type="submit" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400 inline-block">
-                    Limpiar filtros
-                </button>
-            </form>
-        @endif
-
         <!-- Show or hide appointments from previous days -->
-        <div x-data="{ showAll: {{ request('show_all', 0) }} }">
+        <div x-data="{ showAll: {{ request('show_all', 0) }} }" class="flex flex-col items-center justify-center mb-5">
             <!-- Button to show appointments from previous days -->
             <template x-if="!showAll">
-                <button type="button"
-                    class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400 inline-block mb-4"
-                    @click="window.location.href = `{{ route('appointments.index') }}?show_all=1`">
+                <x-primary-button @click="window.location.href = `{{ route('appointments.index') }}?show_all=1`">
                     Mostrar turnos pasados
-                </button>
+                </x-primary-button>
             </template>
 
             <!-- Button to hide appointments from previous days -->
             <template x-if="showAll">
-                <button type="button"
-                    class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-400 inline-block mb-4"
-                    @click="window.location.href = `{{ route('appointments.index') }}?show_all=0`">
+                <x-danger-button @click="window.location.href = `{{ route('appointments.index') }}?show_all=0`">
                     Ocultar turnos pasados
-                </button>
+                </x-danger-button>
             </template>
         </div>
 
-        <!-- If there are no appointments to show, display a message -->
-        <!-- Otherwise, show the appointments in a table -->
+        <!-- If there are no appointments, show a message, otherwise show the list -->
         @if ($appointments->isEmpty())
-            <p class="text-lg">No hay turnos para mostrar.</p>
+            <p class="text-4xl font-bold text-yellow text-center mb-5">No hay turnos registrados</p>
         @else
-            <table class="min-w-full bg-white border border-gray-300">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2 border-b text-start">
-                            <a
-                                href="{{ route('appointments.index', ['sort' => 'barber_id', 'direction' => $sortColumn == 'barber_id' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
-                                Barbero
-                                @if ($sortColumn == 'barber_id')
-                                    @if ($sortDirection == 'asc')
-                                        <span>▲</span>
-                                    @else
-                                        <span>▼</span>
+            <div class="overflow-x-auto">
+                <table class="text-xs sm:text-sm md:text-base w-full mb-5">
+                    <thead class="text-yellow">
+                        <tr>
+                            <th class="px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">
+                                <a
+                                    href="{{ route('appointments.index', ['sort' => 'barber_id', 'direction' => $sortColumn == 'barber_id' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
+                                    Barbero
+                                    @if ($sortColumn == 'barber_id')
+                                        @if ($sortDirection == 'asc')
+                                            <span>▲</span>
+                                        @else
+                                            <span>▼</span>
+                                        @endif
                                     @endif
-                                @endif
-                            </a>
-                        </th>
-
-                        <th class="px-4 py-2 border-b text-start">
-                            <a
-                                href="{{ route('appointments.index', ['sort' => 'user_id', 'direction' => $sortColumn == 'user_id' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
-                                Cliente
-                                @if ($sortColumn == 'user_id')
-                                    @if ($sortDirection == 'asc')
-                                        <span>▲</span>
-                                    @else
-                                        <span>▼</span>
-                                    @endif
-                                @endif
-                            </a>
-                        </th>
-
-                        <th class="px-4 py-2 border-b">
-                            <a
-                                href="{{ route('appointments.index', ['sort' => 'date', 'direction' => $sortColumn == 'date' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
-                                Fecha
-                                @if ($sortColumn == 'date')
-                                    @if ($sortDirection == 'asc')
-                                        <span>▲</span>
-                                    @else
-                                        <span>▼</span>
-                                    @endif
-                                @endif
-                            </a>
-                        </th>
-
-                        <th class="px-4 py-2 border-b">Hora</th>
-
-                        <th class="px-4 py-2 border-b">Acciones</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($appointments as $appointment)
-                        <tr class="hover:bg-gray-100">
-                            <td class="px-4 py-2 border-b">
-                                {{ $appointment->barber->name }}
-                            </td>
-
-                            <td class="px-4 py-2 border-b">
-                                {{ $appointment->user ? $appointment->user->name : 'No asignado' }}
-                            </td>
-
-                            <td class="px-4 py-2 border-b text-center">
-                                {{ \Carbon\Carbon::parse($appointment->date)->format('d-m-Y') }}
-                            </td>
-
-                            <td class="px-4 py-2 border-b text-center">
-                                {{ \Carbon\Carbon::parse($appointment->time)->format('H:i') }}
-                            </td>
-
-                            <td class="px-4 py-2 border-b text-center space-x-2">
-                                <a href="{{ route('appointments.edit', $appointment->id) }}"
-                                    class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-400 inline-block">
-                                    Editar
                                 </a>
+                            </th>
 
-                                <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST"
-                                    class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-400 inline-block"
-                                        onclick="return confirm('¿Seguro que deseas eliminar este turno?')">
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </td>
+                            <th class="hidden sm:table-cell px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">
+                                <a
+                                    href="{{ route('appointments.index', ['sort' => 'user_id', 'direction' => $sortColumn == 'user_id' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
+                                    Cliente
+                                    @if ($sortColumn == 'user_id')
+                                        @if ($sortDirection == 'asc')
+                                            <span>▲</span>
+                                        @else
+                                            <span>▼</span>
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
+
+                            <th class="px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">
+                                <a
+                                    href="{{ route('appointments.index', ['sort' => 'date', 'direction' => $sortColumn == 'date' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
+                                    Fecha
+                                    @if ($sortColumn == 'date')
+                                        @if ($sortDirection == 'asc')
+                                            <span>▲</span>
+                                        @else
+                                            <span>▼</span>
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
+
+                            <th class="px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">Hora</th>
+
+                            <th class="px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">Acciones</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($appointments as $appointment)
+                            <tr>
+                                <td class="text-center px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">
+                                    {{ $appointment->barber->name }}
+                                </td>
+
+                                <td
+                                    class="hidden sm:table-cell text-center px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">
+                                    {{ $appointment->user ? $appointment->user->name : 'No asignado' }}
+                                </td>
+
+                                <td class="px-2 py-1 sm:px-4 sm:py-2 text-center whitespace-nowrap">
+                                    {{ \Carbon\Carbon::parse($appointment->date)->format('d-m-Y') }}
+                                </td>
+
+                                <td class="px-2 py-1 sm:px-4 sm:py-2 text-center whitespace-nowrap">
+                                    {{ \Carbon\Carbon::parse($appointment->time)->format('H:i') }}
+                                </td>
+
+                                <td class="px-2 py-1 sm:px-4 sm:py-2 text-center flex justify-center gap-2">
+                                    <x-primary-button>
+                                        <a href="{{ route('appointments.edit', $appointment->id) }}">Editar</a>
+                                    </x-primary-button>
+
+                                    <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST"
+                                        class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <x-danger-button
+                                            onclick="return confirm('¿Seguro que deseas eliminar este turno?')">
+                                            Eliminar
+                                        </x-danger-button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Pagination -->
             <div class="mt-4">
                 {{ $appointments->appends(request()->query())->links() }}
             </div>
         @endif
-    </div>
+    </section>
 </x-app-layout>
