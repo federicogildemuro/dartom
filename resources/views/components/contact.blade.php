@@ -1,16 +1,17 @@
 <section id="contact" class="min-h-screen flex flex-col items-center justify-center gap-5 m-5 mb-10">
     <div class="text-center mb-5">
-        <h2 class="text-3xl md:text-4xl font-bold text-yellow mb-5">¿Querés un corte o una charla filosófica?</h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-yellow mb-5" data-aos="zoom-in">¿Querés un corte o una charla
+            filosófica?</h2>
 
-        <p class="text-lg mb-5">
+        <p class="text-lg mb-5" data-aos="fade-up" data-aos-delay="250">
             Sabemos que pedir turno a veces es más difícil que ganar una discusión con tu vieja. Pero tranqui, podés
             hablar directamente con nosotros sin tener que mandar señales de humo.
         </p>
 
-        <p class="text-lg mb-5">Si necesitás un corte, un retoque o simplemente hablar de lo que se te cante, ¡acá
-            estamos!</p>
+        <p class="text-lg mb-5" data-aos="fade-up" data-aos-delay="500">Si necesitás un corte, un retoque o simplemente
+            hablar de lo que se te cante, ¡acá estamos!</p>
 
-        <div class="flex flex-col sm:flex-row justify-center gap-5">
+        <div class="flex flex-col sm:flex-row justify-center gap-5" data-aos="fade-up" data-aos-delay="750">
             <a href="https://wa.me/549XXXXXXXXXX" target="_blank"
                 class="text-lg px-6 py-3 bg-green-500 rounded-lg hover:bg-green-600 transition duration-150 ease-in-out">
                 <i class="fab fa-whatsapp text-2xl"></i> Hablar con Daro
@@ -23,7 +24,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col md:flex-row items-center justify-center gap-5">
+    <div class="flex flex-col md:flex-row items-center justify-center gap-5" data-aos="fade-up" data-aos-delay="1000">
         <div class="w-full md:w-1/2 text-lg text-center md:text-left">
             <p class="text-yellow mb-5">
                 <i class="fas fa-map-marker-alt text-2xl"></i>
