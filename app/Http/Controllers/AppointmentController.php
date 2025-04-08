@@ -8,6 +8,9 @@ use App\Models\Barber;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentReserved;
+use App\Mail\AppointmentCanceled;
 
 class AppointmentController extends Controller
 {
@@ -207,40 +210,55 @@ class AppointmentController extends Controller
         // Get the authenticated user
         $user = Auth::user();
 
-        // Check if the user already has an appointment
+        // If the user already has an appointment, show an error message
         if (Appointment::where('user_id', $user->id)->where('date', '>=', Carbon::today())->exists()) {
             return redirect()->route('appointments.available')->with('error', 'Ya tienes un turno vigente.');
         }
 
         // Find the appointment by ID and lock it for update
         $appointment = Appointment::where('id', $id)->whereNull('user_id')->lockForUpdate()->first();
-
         // If the appointment is not found or already taken, show an error message
         if (!$appointment) {
             return redirect()->route('appointments.available')->with('error', 'El turno ya fue tomado.');
         }
 
+        // Assign the user to the appointment and save it
         $appointment->user_id = $user->id;
         $appointment->save();
 
+        // Get the barber associated with the appointment
+        $barber = Barber::find($appointment->barber_id);
+        // Send confirmation email to the user
+        Mail::to($user->email)->send(new AppointmentReserved($appointment, $user, $barber));
+
+        // Redirect to the available appointments page with a success message
         return redirect()->route('appointments.available')->with('success', 'Turno reservado exitosamente.');
     }
 
     public function cancelAppointment()
     {
+        // Get the authenticated user
         $user = Auth::user();
 
+        // Check if the user has an appointment
         $appointment = Appointment::where('user_id', $user->id)
             ->where('date', '>=', Carbon::today())
             ->first();
-
+        // If the user doesn't have an appointment, show an error message
         if (!$appointment) {
             return redirect()->route('appointments.available')->with('error', 'No tienes turnos para cancelar.');
         }
 
+        // Get the barber associated with the appointment
+        $barber = Barber::find($appointment->barber_id);
+        // Send cancellation email to the user
+        Mail::to($user->email)->send(new AppointmentCanceled($appointment, $user, $barber));
+
+        // Cancel the appointment by setting the user_id to null and saving it
         $appointment->user_id = null;
         $appointment->save();
 
+        // Redirect to the available appointments page with a success message
         return redirect()->route('appointments.available')->with('success', 'Turno cancelado exitosamente.');
     }
 
