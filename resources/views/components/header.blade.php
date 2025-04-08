@@ -2,7 +2,7 @@
     <nav class="flex justify-between items-center" aria-label="Navegación principal">
         <!-- Logo -->
         <a href="{{ route('home') }}" class="hover:scale-110 transition duration-150 ease-in-out">
-            <img src="{{ asset('storage/logo.png') }}" alt="Logo de Dartom Barbería" class="h-32 object-contain">
+            <img src="{{ asset('storage/logo.webp') }}" alt="Logo de Dartom Barbería" class="h-32 object-contain">
         </a>
 
         <!-- Navigation Links -->

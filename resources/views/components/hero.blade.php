@@ -1,5 +1,5 @@
 <section class="relative bg-cover bg-center"
-    style="background-image: url('{{ asset('storage/hero-background.jpg') }}'); height: 80vh;">
+    style="background-image: url('{{ asset('storage/hero-background.webp') }}'); height: 80vh;">
     <div class="absolute inset-0 bg-black opacity-50"></div>
 
     <div class="relative h-full z-10 flex flex-col items-center justify-center gap-5 mx-5 mb-5 text-center">

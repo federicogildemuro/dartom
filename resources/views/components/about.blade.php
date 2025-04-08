@@ -1,8 +1,7 @@
 <section id="about" class="min-h-screen flex flex-col md:flex-row items-center justify-center gap-5 m-5"
     aria-labelledby="about-title">
     <div class="md:w-1/2 flex items-center justify-center">
-        <img src="{{ asset('storage/daro-tommy.png') }}" alt="Foto de Daro y Tommy en la barbería"
-            class="object-cover rounded-xl shadow-md">
+        <img src="{{ asset('storage/daro-tommy.webp') }}" alt="Foto de Daro y Tommy en la barbería" class="object-cover">
     </div>
 
     <div class="md:w-1/2 text-center md:text-left sm:max-w-lg">
