@@ -3,16 +3,17 @@
 
         <!-- Show success or error message -->
         @if (session('success'))
-            <div class="bg-green-100 text-green-800 border-l-4 border-green-500 p-4 mb-4">
+            <div role="alert" aria-live="polite"
+                class="bg-green-100 text-green-800 border-l-4 border-green-500 p-4 mb-4">
                 {{ session('success') }}
             </div>
         @elseif (session('error'))
-            <div class="bg-red-100 text-red-800 border-l-4 border-red-500 p-4 mb-4">
+            <div role="alert" aria-live="polite" class="bg-red-100 text-red-800 border-l-4 border-red-500 p-4 mb-4">
                 {{ session('error') }}
             </div>
         @endif
 
-        <!-- Show user appointment details if exists -->
+        <!-- Show existing appointment if it exists, otherwise show the filters and available appointments -->
         @if (isset($existingAppointment))
             <h1 class="text-4xl font-bold text-yellow text-center mb-5">Tu próximo turno</h1>
             <p class="text-center mb-5">Solo podés tener un turno activo a la vez.</p>
@@ -36,20 +37,24 @@
                 <div>
                     <form action="{{ route('appointments.cancel') }}" method="POST">
                         @csrf
-                        <x-danger-button>Cancelar Turno</x-danger-button>
+                        <x-danger-button
+                            aria-label="Cancelar turno con {{ $existingAppointment->barber->name }} el {{ $existingAppointment->date }}">Cancelar
+                            Turno</x-danger-button>
                     </form>
                 </div>
             </div>
         @else
-            <!-- If the user has no current appointment, show filters and available appointments -->
-            <div class="flex flex-col md:flex-row items-center justify-center gap-5 mb-5">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-5 mb-5" role="region"
+                aria-labelledby="filtros">
+                <h2 id="filtros" class="sr-only">Filtros disponibles</h2>
+
                 <!-- Barber Filter -->
-                <select x-model="barber"
+                <label for="barber-select" class="sr-only">Seleccionar Barbero</label>
+                <select id="barber-select" x-model="barber"
                     @change="window.location.href = `{{ route('appointments.available') }}?barber_id=${barber}`"
-                    class="text-black py-2 px-4 rounded border-2 border-yellow w-2/3 md:w-1/4">
-
+                    class="text-black py-2 px-4 rounded border-2 border-yellow w-2/3 md:w-1/4"
+                    aria-label="Seleccionar Barbero">
                     <option value="">Filtrar por Barbero</option>
-
                     @foreach ($barbers as $barberItem)
                         <option value="{{ $barberItem->id }}" @if (request('barber_id') == $barberItem->id) selected @endif>
                             {{ $barberItem->name }}
@@ -58,43 +63,37 @@
                 </select>
 
                 <!-- Date Filter -->
-                <input type="date" x-model="date"
+                <label for="date-select" class="sr-only">Seleccionar Fecha</label>
+                <input id="date-select" x-model="date" type="date"
                     @change="window.location.href = `{{ route('appointments.available') }}?date=${date}`"
                     class="text-black py-2 px-4 rounded border-2 border-yellow w-2/3 md:w-1/4"
-                    value="{{ request('date') }}">
+                    value="{{ request('date') }}" aria-label="Seleccionar Fecha">
             </div>
 
-            <!-- Show filters applied -->
+            <!-- Show filters applied and clear button -->
             <div class="flex flex-col items-center justify-center mb-5">
-                <!-- Show selected barber -->
                 @if (request('barber_id'))
-                    <span class="text-yellow mb-5">
-                        Mostrando turnos del barbero:{{ $barbers->firstWhere('id', request('barber_id'))->name }}
-                    </span>
+                    <span class="text-yellow mb-5">Mostrando turnos del barbero:
+                        {{ $barbers->firstWhere('id', request('barber_id'))->name }}</span>
                 @endif
-
-                <!-- Show selected date -->
                 @if (request('date'))
-                    <span class="text-yellow mb-5">
-                        Mostrando turnos del día:{{ \Carbon\Carbon::parse(request('date'))->format('d-m-Y') }}
-                    </span>
+                    <span class="text-yellow mb-5">Mostrando turnos del día:
+                        {{ \Carbon\Carbon::parse(request('date'))->format('d-m-Y') }}</span>
                 @endif
-
-                <!-- Clear filters button -->
                 @if (request('barber_id') || request('date'))
                     <form action="{{ route('appointments.available') }}" method="GET">
-                        <x-primary-button>Limpiar filtros</x-primary-button>
+                        <x-primary-button aria-label="Limpiar filtros aplicados">Limpiar filtros</x-primary-button>
                     </form>
                 @endif
             </div>
 
-            <!-- If no available appointments -->
+            <!-- If there are no available appointments show a message, otherwise show the table -->
             @if ($availableAppointments->isEmpty())
                 <p class="text-4xl font-bold text-yellow text-center mb-5">No hay turnos disponibles para mostrar.</p>
             @else
-                <!-- Available appointments Table -->
                 <div class="overflow-x-auto">
                     <table class="text-sm sm:text-base w-full mb-5">
+                        <caption class="sr-only">Lista de turnos disponibles para reservar</caption>
                         <thead class="text-yellow">
                             <tr>
                                 <th class="text-start px-2 py-1 sm:px-4 sm:py-2">
@@ -102,11 +101,7 @@
                                         href="{{ route('appointments.available', ['sort' => 'barber_id', 'direction' => $sortColumn == 'barber_id' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
                                         Barbero
                                         @if ($sortColumn == 'barber_id')
-                                            @if ($sortDirection == 'asc')
-                                                <span>▲</span>
-                                            @else
-                                                <span>▼</span>
-                                            @endif
+                                            <span>{{ $sortDirection == 'asc' ? '▲' : '▼' }}</span>
                                         @endif
                                     </a>
                                 </th>
@@ -116,11 +111,7 @@
                                         href="{{ route('appointments.available', ['sort' => 'date', 'direction' => $sortColumn == 'date' && $sortDirection == 'asc' ? 'desc' : 'asc']) }}">
                                         Fecha
                                         @if ($sortColumn == 'date')
-                                            @if ($sortDirection == 'asc')
-                                                <i class="fas fa-arrow-up"></i>
-                                            @else
-                                                <i class="fas fa-arrow-down"></i>
-                                            @endif
+                                            <span>{{ $sortDirection == 'asc' ? '▲' : '▼' }}</span>
                                         @endif
                                     </a>
                                 </th>
@@ -132,9 +123,7 @@
                         <tbody>
                             @foreach ($availableAppointments as $appointment)
                                 <tr>
-                                    <td class="px-2 py-1 sm:px-4 sm:py-2">
-                                        {{ $appointment->barber->name }}
-                                    </td>
+                                    <td class="px-2 py-1 sm:px-4 sm:py-2">{{ $appointment->barber->name }}</td>
 
                                     <td class="px-2 py-1 sm:px-4 sm:py-2 text-center">
                                         {{ \Carbon\Carbon::parse($appointment->date)->format('d-m-Y') }}
@@ -148,7 +137,10 @@
                                         <form action="{{ route('appointments.book', $appointment->id) }}"
                                             method="POST">
                                             @csrf
-                                            <x-primary-button>Reservar</x-primary-button>
+                                            <x-primary-button
+                                                aria-label="Reservar turno con {{ $appointment->barber->name }} el {{ $appointment->date }} a las {{ $appointment->time }}">
+                                                Reservar
+                                            </x-primary-button>
                                         </form>
                                     </td>
                                 </tr>

@@ -7,16 +7,16 @@
         </p>
 
         <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+        <x-auth-session-status class="mb-4" :status="session('status')" role="status" />
 
-        <form method="POST" action="{{ route('password.email') }}" class="w-full">
+        <form method="POST" action="{{ route('password.email') }}" class="w-full" role="form">
             @csrf
 
             <!-- Email  -->
             <div class="mb-5">
-                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" required
-                    autofocus />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')"
+                    required autofocus autocomplete="username" aria-describedby="email-error" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" id="email-error" role="alert" />
             </div>
 
             <!-- Submit Button -->

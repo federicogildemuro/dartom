@@ -18,13 +18,14 @@
 
         <!-- Session Status -->
         @if (session('status') == 'verification-link-sent')
-            <div class="text-yellow mb-5">
+            <div class="text-yellow mb-5" role="status" aria-live="polite">
                 Ya te mandamos un nuevo enlace de verificación a tu correo electrónico.
             </div>
         @endif
 
         <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}" class="w-100">
+            <form method="POST" action="{{ route('verification.send') }}" class="w-100" role="form"
+                aria-label="Reenviar enlace de verificación por correo electrónico">
                 @csrf
 
                 <!-- Submit Button -->
@@ -33,4 +34,5 @@
                 </div>
             </form>
         </div>
+    </section>
 </x-app-layout>

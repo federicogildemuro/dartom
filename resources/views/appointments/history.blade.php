@@ -8,7 +8,7 @@
                 <x-primary-button
                     class="bg-yellow text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-150 ease-in-out">
                     <a href="{{ route('appointments.available') }}">Sacar un turno</a>
-                    <i class="fas fa-calendar-alt ms-2"></i>
+                    <i class="fas fa-calendar-alt ms-2" aria-hidden="true"></i>
                 </x-primary-button>
             </div>
         @else
@@ -19,11 +19,11 @@
                 <table class="w-full sm:w-1/2 mx-auto mb-5">
                     <thead class="text-yellow">
                         <tr>
-                            <th class="px-4 py-2">Barbero</th>
+                            <th scope="col" class="px-4 py-2">Barbero</th>
 
-                            <th class="px-4 py-2">Fecha</th>
+                            <th scope="col" class="px-4 py-2">Fecha</th>
 
-                            <th class="px-4 py-2">Hora</th>
+                            <th scope="col" class="px-4 py-2">Hora</th>
                         </tr>
                     </thead>
 

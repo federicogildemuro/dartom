@@ -11,18 +11,19 @@
 
         <!-- Session Status -->
         @if (session('status') == 'profile-updated')
-            <p class="text-green-500 mb-5">
+            <p class="text-green-500 mb-5" role="status" aria-live="polite">
                 Tu información de perfil ha sido actualizada correctamente.
             </p>
         @endif
 
         <!-- Email Verification Form -->
-        <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+        <form id="send-verification" method="post" action="{{ route('verification.send') }}" aria-hidden="true">
             @csrf
         </form>
 
         <!-- Profile Update Form -->
-        <form method="post" action="{{ route('profile.update') }}" class="w-full mb-10">
+        <form method="post" action="{{ route('profile.update') }}" class="w-full mb-10" role="form"
+            aria-label="Formulario para actualizar información de perfil">
             @csrf
             @method('patch')
 
@@ -46,15 +47,15 @@
                     <div>
                         <p class="text-sm text-red-500 my-2">
                             Tu dirección de correo electrónico no está verificada.
-
                         </p>
                         <button form="send-verification"
-                            class="text-sm hover:text-yellow transition duration-150 ease-in-out mb-2">
+                            class="text-sm hover:text-yellow transition duration-150 ease-in-out mb-2"
+                            aria-label="Reenviar enlace de verificación de correo">
                             Hacé click acá y te enviamos un nuevo enlace para validarla.
                         </button>
 
                         @if (session('status') === 'verification-link-sent')
-                            <p class="text-sm text-green-500 mb-2">
+                            <p class="text-sm text-green-500 mb-2" role="status" aria-live="polite">
                                 Se te envió un nuevo enlace de verificación a tu correo electrónico.
                             </p>
                         @endif
@@ -84,13 +85,14 @@
 
         <!-- Session Status -->
         @if (session('status') == 'password-updated')
-            <p class="text-green-500 mb-5">
+            <p class="text-green-500 mb-5" role="status" aria-live="polite">
                 Tu contraseña ha sido actualizada correctamente.
             </p>
         @endif
 
         <!-- Password Update Form -->
-        <form method="post" action="{{ route('password.update') }}" class="w-full mb-10">
+        <form method="post" action="{{ route('password.update') }}" class="w-full mb-10" role="form"
+            aria-label="Formulario para cambiar la contraseña">
             @csrf
             @method('put')
 
@@ -134,12 +136,14 @@
         <!-- Submit Button -->
         <div class="flex items-center justify-center mb-10">
             <x-danger-button x-data=""
-                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">Borrar cuenta</x-danger-button>
+                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+                aria-label="Abrir modal para confirmar eliminación de cuenta">Borrar cuenta</x-danger-button>
         </div>
 
         <!-- Delete Account Confirmation Modal -->
         <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-            <form method="post" action="{{ route('profile.destroy') }}" class="w-full p-5">
+            <form method="post" action="{{ route('profile.destroy') }}" class="w-full p-5" role="form"
+                aria-label="Formulario para confirmar la eliminación de cuenta">
                 @csrf
                 @method('delete')
 

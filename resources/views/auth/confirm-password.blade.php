@@ -7,14 +7,14 @@
             contraseña.
         </p>
 
-        <form method="POST" action="{{ route('password.confirm') }}" class="w-full">
+        <form method="POST" action="{{ route('password.confirm') }}" class="w-full" role="form">
             @csrf
 
             <!-- Password -->
             <div class="mb-5">
                 <x-text-input id="password" class="block w-full" type="password" name="password" required
-                    autocomplete="current-password" />
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    autocomplete="current-password" aria-describedby="password-error" />
+                <x-input-error :messages="$errors->get('password')" class="mt-2" id="password-error" role="alert" />
             </div>
 
             <!-- Submit Button -->
