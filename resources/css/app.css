@@ -21,4 +21,8 @@
     h6 {
         @apply font-title tracking-widest;
     }
+
+    [x-cloak] {
+        display: none !important;
+    }
 }

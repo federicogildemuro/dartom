@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="min-h-screen p-5">
+    <section class="min-h-screen p-5" x-data="{ barberId: null, showDeleteModal: false }">
         <h1 class="text-4xl font-bold text-yellow text-center mb-5">Barberos</h1>
         <p class="text-center mb-5">Acá podés ver y gestionar todos los barberos registrados.</p>
 
@@ -58,21 +58,42 @@
                                         <a href="{{ route('barbers.edit', $barber->id) }}">Editar</a>
                                     </x-primary-button>
 
-                                    <form action="{{ route('barbers.destroy', $barber->id) }}" method="POST"
-                                        class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <x-danger-button
-                                            onclick="return confirm('¿Seguro que deseas eliminar este barbero?')">
-                                            Eliminar
-                                        </x-danger-button>
-                                    </form>
+                                    <x-danger-button
+                                        @click.prevent="barberId = {{ $barber->id }}; showDeleteModal = true">
+                                        Eliminar
+                                    </x-danger-button>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+                <!-- Delete Barber Modal -->
+                <div x-show="showDeleteModal" x-transition x-cloak
+                    class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                    <div class="bg-black p-5 border-2 border-yellow rounded-lg shadow-lg max-w-sm w-full">
+                        <h2 class="text-lg text-yellow font-bold mb-5 text-center">
+                            ¿Estás seguro de que deseas eliminar el barbero?
+                        </h2>
+                        <p class="mb-5 text-center">Esta acción no se puede deshacer y eliminará todos los turnos
+                            asociados a este barbero.</p>
+
+                        <div class="flex justify-between">
+                            <x-primary-button @click="showDeleteModal = false">
+                                Cancelar
+                            </x-primary-button>
+
+                            <form :action="`/barbers/${barberId}`" method="POST" @submit="showDeleteModal = false">
+                                @csrf
+                                @method('DELETE')
+
+                                <x-danger-button type="submit">
+                                    Eliminar
+                                </x-danger-button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         @endif
     </section>

@@ -1,5 +1,11 @@
 <x-app-layout>
-    <section class="min-h-screen p-5" x-data="{ barber: '', user: '', date: '' }">
+    <section class="min-h-screen p-5" x-data="{
+        barber: '',
+        user: '',
+        date: '',
+        appointmentId: null,
+        showDeleteModal: false
+    }">
         <h1 class="text-4xl font-bold text-yellow text-center mb-5">Turnos</h1>
         <p class="text-center mb-5">Acá podés ver y gestionar todos los turnos registrados.</p>
 
@@ -192,7 +198,7 @@
                                         @method('DELETE')
 
                                         <x-danger-button
-                                            onclick="return confirm('¿Seguro que deseas eliminar este turno?')">
+                                            @click.prevent="appointmentId = {{ $appointment->id }}; showDeleteModal = true">
                                             Eliminar
                                         </x-danger-button>
                                     </form>
@@ -201,6 +207,33 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                <!-- Delete Appointment Modal -->
+                <div x-show="showDeleteModal" x-transition x-cloak
+                    class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                    <div class="bg-black p-5 border-2 border-yellow rounded-lg shadow-lg max-w-sm w-full">
+                        <h2 class="text-lg text-yellow font-bold mb-5 text-center">
+                            ¿Estás seguro de que deseas eliminar el turno?
+                        </h2>
+                        <p class="mb-5 text-center">Esta acción no se puede deshacer.</p>
+
+                        <div class="flex justify-between">
+                            <x-primary-button @click="showDeleteModal = false">
+                                Cancelar
+                            </x-primary-button>
+
+                            <form :action="`/appointments/${appointmentId}`" method="POST"
+                                @submit="showDeleteModal = false">
+                                @csrf
+                                @method('DELETE')
+
+                                <x-danger-button type="submit">
+                                    Eliminar
+                                </x-danger-button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Pagination -->

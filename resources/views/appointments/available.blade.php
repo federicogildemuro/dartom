@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="min-h-screen p-5" x-data="{ barber: '', date: '' }">
+    <section class="min-h-screen p-5" x-data="{ barber: '', date: '', appointmentId: null, showModal: false, modalAction: '' }">
 
         <!-- Show success or error message -->
         @if (session('success'))
@@ -35,12 +35,15 @@
                 </div>
 
                 <div>
-                    <form action="{{ route('appointments.cancel') }}" method="POST">
-                        @csrf
-                        <x-danger-button
-                            aria-label="Cancelar turno con {{ $existingAppointment->barber->name }} el {{ $existingAppointment->date }}">Cancelar
-                            Turno</x-danger-button>
-                    </form>
+                    <x-danger-button
+                        @click.prevent="
+                            showModal = true;
+                            modalAction = 'cancel';
+                            appointmentId = {{ $existingAppointment->id }};
+                        "
+                        aria-label="Cancelar turno con {{ $existingAppointment->barber->name }} el {{ $existingAppointment->date }}">
+                        Cancelar Turno
+                    </x-danger-button>
                 </div>
             </div>
         @else
@@ -134,14 +137,15 @@
                                     </td>
 
                                     <td class="px-2 py-1 sm:px-4 sm:py-2 text-end">
-                                        <form action="{{ route('appointments.book', $appointment->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            <x-primary-button
-                                                aria-label="Reservar turno con {{ $appointment->barber->name }} el {{ $appointment->date }} a las {{ $appointment->time }}">
-                                                Reservar
-                                            </x-primary-button>
-                                        </form>
+                                        <x-primary-button
+                                            @click.prevent="
+                                                showModal = true;
+                                                modalAction = 'book';
+                                                appointmentId = {{ $appointment->id }};
+                                            "
+                                            aria-label="Reservar turno con {{ $appointment->barber->name }} el {{ $appointment->date }} a las {{ $appointment->time }}">
+                                            Reservar
+                                        </x-primary-button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -155,5 +159,52 @@
                 </div>
             @endif
         @endif
+
+        <!-- Confirm Action Modal (Cancel / Book) -->
+        <div x-show="showModal" x-transition x-cloak
+            class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+            <div class="bg-black p-5 border-2 border-yellow rounded-lg shadow-lg max-w-sm w-full">
+                <template x-if="modalAction === 'cancel' || modalAction === 'book'">
+                    <h2 class="text-lg text-yellow text-center mb-5">
+                        <span
+                            x-text="modalAction === 'cancel' ? '¿Estás seguro de que querés cancelar el turno?' : '¿Estás seguro de que querés reservar el turno?'"></span>
+                    </h2>
+                </template>
+
+                <div class="flex justify-between">
+                    <template x-if="modalAction === 'cancel'">
+                        <x-primary-button @click="showModal = false">
+                            No, me lo quedo
+                        </x-primary-button>
+                    </template>
+
+                    <template x-if="modalAction === 'book'">
+                        <x-danger-button @click="showModal = false">
+                            No, no lo quiero
+                        </x-danger-button>
+                    </template>
+
+                    <template x-if="modalAction === 'cancel'">
+                        <form :action="`/appointments/cancel`" method="POST" @submit="showModal = false">
+                            @csrf
+                            <input type="hidden" name="appointment_id" :value="appointmentId">
+                            <x-danger-button type="submit">
+                                Sí, no lo quiero
+                            </x-danger-button>
+                        </form>
+                    </template>
+
+                    <template x-if="modalAction === 'book'">
+                        <form :action="`/appointments/book/${appointmentId}`" method="POST"
+                            @submit="showModal = false">
+                            @csrf
+                            <x-primary-button type="submit">
+                                Sí, me lo quedo
+                            </x-primary-button>
+                        </form>
+                    </template>
+                </div>
+            </div>
+        </div>
     </section>
 </x-app-layout>
