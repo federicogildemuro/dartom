@@ -42,9 +42,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<!-- Scroll to Top Button -->
-<x-scroll-to-top />
-
 <body class="antialiased">
     <div class="min-h-screen">
         <x-header />
@@ -55,6 +52,9 @@
 
         <x-footer />
     </div>
+
+    <!-- Scroll to Top Button -->
+    <x-scroll-to-top />
 
     <!-- Font Awesome Script -->
     <script src="https://kit.fontawesome.com/fc6964b5bb.js" crossorigin="anonymous"></script>
