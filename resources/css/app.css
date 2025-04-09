@@ -25,4 +25,13 @@
     [x-cloak] {
         display: none !important;
     }
+
+    [data-aos] {
+        opacity: 0;
+        transition-property: opacity, transform;
+    }
+
+    [data-aos].aos-animate {
+        opacity: 1;
+    }
 }
