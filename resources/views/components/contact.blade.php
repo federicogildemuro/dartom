@@ -1,4 +1,4 @@
-<section id="contact" class="min-h-screen flex flex-col items-center justify-center gap-5 m-5 mb-10"
+<section id="contact" class="min-h-screen flex flex-col items-center justify-center gap-5 m-5 mb-10 scroll-mt-32"
     aria-labelledby="contact-heading">
     <div class="text-center mb-5">
         <h2 id="contact-heading" class="text-3xl md:text-4xl font-bold text-yellow mb-5" data-aos="zoom-in">

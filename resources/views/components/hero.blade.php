@@ -1,4 +1,4 @@
-<section class="relative bg-cover bg-center"
+<section id="home" class="relative bg-cover bg-center scroll-mt-32"
     style="background-image: url('{{ asset('storage/hero-background.webp') }}'); height: 80vh;">
     <div class="absolute inset-0 bg-black opacity-50"></div>
 

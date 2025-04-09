@@ -1,7 +1,7 @@
 <footer class="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-5 bg-gray p-10 text-xl" role="contentinfo">
     <!-- Navigation Links -->
     <nav class="flex flex-col gap-5 text-center sm:text-start" aria-label="Secciones del sitio">
-        <x-footer-link href="{{ route('home') }}">Inicio</x-footer-link>
+        <x-footer-link href="#home">Inicio</x-footer-link>
         <x-footer-link href="#about">Nosotros</x-footer-link>
         <x-footer-link href="#contact">Contacto</x-footer-link>
     </nav>

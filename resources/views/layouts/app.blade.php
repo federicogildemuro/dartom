@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 
 <head>
     <!-- Meta tags -->
@@ -49,7 +49,7 @@
     <div class="min-h-screen">
         <x-header />
 
-        <main>
+        <main class="pt-32">
             {{ $slot }}
         </main>
 

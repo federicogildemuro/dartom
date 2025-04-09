@@ -1,4 +1,4 @@
-<header x-data="{ open: false }" class="px-5 sm:px-10" role="banner">
+<header x-data="{ open: false }" class="fixed top-0 left-0 w-full h-32 z-50 bg-black px-5 sm:px-10" role="banner">
     <nav class="flex justify-between items-center" aria-label="Navegación principal">
         <!-- Logo -->
         <a href="{{ route('home') }}" class="hover:scale-110 transition duration-150 ease-in-out">
@@ -54,7 +54,7 @@
     </nav>
 
     <!-- Responsive Navigation Menu -->
-    <nav id="mobile-menu" :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden mt-4"
+    <nav id="mobile-menu" :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden bg-black"
         aria-label="Navegación móvil">
         <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">Inicio</x-responsive-nav-link>
         <x-responsive-nav-link :href="'#about'" :active="request()->routeIs('about')">Nosotros</x-responsive-nav-link>
