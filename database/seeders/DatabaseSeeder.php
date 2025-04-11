@@ -24,21 +24,15 @@ class DatabaseSeeder extends Seeder
         // Create a specific user with admin role.
         User::factory()->create([
             'name' => 'Test Admin',
-            'email' => 'federicogildemuro@gmail.com',
+            'email' => 'admin@mail.com',
             'role' => 'admin',
-        ]);
-
-        // Create a specific user with user role.
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'fgildemuro@hotmail.com',
         ]);
 
         // Create 50 random users.
         User::factory(50)->create();
 
-        // Create 2 random barbers.
-        Barber::factory(2)->create();
+        // Create 5 random barbers.
+        Barber::factory(5)->create();
 
         // Create 100 random appointments.
         Appointment::factory(100)->create();

@@ -14,7 +14,7 @@ class AppointmentFactory extends Factory
 
         return [
             'barber_id' => Barber::inRandomOrder()->first()->id,
-            'user_id' => $this->faker->randomElement([null, User::whereNotIn('id', [1, 2])->inRandomOrder()->first()->id]),
+            'user_id' => $this->faker->randomElement([null, User::where('id', '!=', 1)->inRandomOrder()->first()->id]),
             'date' => $this->faker->dateTimeBetween('-1 month', '+1 month'),
             'time' => $this->faker->randomElement($hours),
         ];
