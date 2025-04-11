@@ -171,12 +171,12 @@
                         @foreach ($appointments as $appointment)
                             <tr>
                                 <td class="text-center px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">
-                                    {{ $appointment->barber->name }}
+                                    {{ $appointment->barber->name ?? 'No asignado' }}
                                 </td>
 
                                 <td
                                     class="hidden sm:table-cell text-center px-2 py-1 sm:px-4 sm:py-2 whitespace-nowrap">
-                                    {{ $appointment->user ? $appointment->user->name : 'No asignado' }}
+                                    {{ $appointment->user->name ?? 'No asignado' }}
                                 </td>
 
                                 <td class="px-2 py-1 sm:px-4 sm:py-2 text-center whitespace-nowrap">
