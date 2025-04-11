@@ -15,26 +15,26 @@ use App\Http\Controllers\Auth\PasswordController;
 // Public routes
 Route::middleware('guest')->group(function () {
     // Register view
-    Route::get('register', [RegisteredUserController::class, 'create'])
+    Route::get('registrarse', [RegisteredUserController::class, 'create'])
         ->name('register');
     // Register user
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('registrarse', [RegisteredUserController::class, 'store']);
 
     // Login view
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    Route::get('iniciar-sesion', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
     // Login user
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('iniciar-sesion', [AuthenticatedSessionController::class, 'store']);
 
     // Forgot password view
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    Route::get('olvidaste-tu-contraseña', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
     // Send password reset link
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
         ->name('password.email');
 
     // Reset password view
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    Route::get('restablecer-contraseña/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');
     // Reset password
     Route::post('reset-password', [NewPasswordController::class, 'store'])
@@ -44,7 +44,7 @@ Route::middleware('guest')->group(function () {
 // Authenticated routes
 Route::middleware('auth')->group(function () {
     // Verify email view
-    Route::get('verify-email', EmailVerificationPromptController::class)
+    Route::get('verificar-correo', EmailVerificationPromptController::class)
         ->name('verification.notice');
     // Verify email
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
         ->name('verification.send');
 
     // Profile edit view
-    Route::get('profile', [ProfileController::class, 'edit'])
+    Route::get('perfil', [ProfileController::class, 'edit'])
         ->name('profile.edit');
     // Update profile
     Route::patch('profile', [ProfileController::class, 'update'])
@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
     // Confirm password view
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
+    Route::get('confirmar-contraseña', [ConfirmablePasswordController::class, 'show'])
         ->name('password.confirm');
     // Confirm password
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
