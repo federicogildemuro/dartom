@@ -22,7 +22,7 @@
             <div
                 class="flex flex-col items-center justify-center gap-5 border-2 border-yellow rounded-lg shadow-yellow shadow-sm max-w-lg mx-auto p-5 mb-5">
                 <div>
-                    <p><strong>Barbero: </strong>{{ $existingAppointment->barber->name }}</p>
+                    <p><strong>Barbero: </strong>{{ $existingAppointment->barber->name ?? 'No asignado' }}</p>
                 </div>
 
                 <div>
@@ -41,7 +41,7 @@
                             modalAction = 'cancel';
                             appointmentId = {{ $existingAppointment->id }};
                         "
-                        aria-label="Cancelar turno con {{ $existingAppointment->barber->name }} el {{ $existingAppointment->date }}">
+                        aria-label="Cancelar turno con {{ $existingAppointment->barber->name ?? 'No asignado' }} el {{ $existingAppointment->date }} a las {{ $existingAppointment->time }}">
                         Cancelar Turno
                     </x-danger-button>
                 </div>
@@ -126,7 +126,8 @@
                         <tbody>
                             @foreach ($availableAppointments as $appointment)
                                 <tr>
-                                    <td class="px-2 py-1 sm:px-4 sm:py-2">{{ $appointment->barber->name }}</td>
+                                    <td class="px-2 py-1 sm:px-4 sm:py-2">
+                                        {{ $appointment->barber->name ?? 'No asignado' }}</td>
 
                                     <td class="px-2 py-1 sm:px-4 sm:py-2 text-center">
                                         {{ \Carbon\Carbon::parse($appointment->date)->format('d-m-Y') }}
@@ -143,7 +144,7 @@
                                                 modalAction = 'book';
                                                 appointmentId = {{ $appointment->id }};
                                             "
-                                            aria-label="Reservar turno con {{ $appointment->barber->name }} el {{ $appointment->date }} a las {{ $appointment->time }}">
+                                            aria-label="Reservar turno con {{ $appointment->barber->name ?? 'No asignado' }} el {{ $appointment->date }} a las {{ $appointment->time }}">
                                             Reservar
                                         </x-primary-button>
                                     </td>

@@ -31,7 +31,7 @@
                         @foreach ($appointments as $appointment)
                             <tr>
                                 <td class="px-4 py-2 text-center">
-                                    {{ $appointment->barber->name }}
+                                    {{ $appointment->barber->name ?? 'Desconocido' }}
                                 </td>
 
                                 <td class="px-4 py-2 text-center">
