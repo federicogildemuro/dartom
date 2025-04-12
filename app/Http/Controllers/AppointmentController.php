@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\Appointment;
 use App\Models\Barber;
 use App\Models\User;
 use Carbon\Carbon;
@@ -50,13 +50,13 @@ class AppointmentController extends Controller
         }
 
         // If the request has the 'show_all' parameter set to 1, show all appointments
+        // Otherwise, show only future appointments
         if ($request->has('show_all') && $request->show_all == 1) {
             $appointments = $appointments->orderBy($sortColumn, $sortDirection)
                 ->orderBy('date', 'asc') // Default secondary sort by 'date'
                 ->orderBy('time', 'asc') // Default tertiary sort by 'time'
                 ->paginate(10); // Paginate the results
         } else {
-            // Otherwise, get only the appointments that have a date greater than or equal to today
             $appointments = $appointments->where('date', '>=', Carbon::today())
                 ->orderBy($sortColumn, $sortDirection)
                 ->orderBy('date', 'asc') // Default secondary sort by 'date'
@@ -71,13 +71,17 @@ class AppointmentController extends Controller
     // Show the form for creating appointments
     public function create()
     {
+        // Fetch all barbers for the dropdown
         $barbers = Barber::all();
+
+        // Return the view with the barbers data
         return view('appointments.create', compact('barbers'));
     }
 
-    // Store a newly created appointment in the database
+    // Store the newly created appointments in the database
     public function store(Request $request)
     {
+        // Validate the incoming request data
         $request->validate([
             'barber_id' => 'required|exists:barbers,id',
             'date' => 'required|date|after_or_equal:' . Carbon::today()->toDateString(),
@@ -85,11 +89,13 @@ class AppointmentController extends Controller
             'end_time' => 'required|date_format:H:i|after_or_equal:start_time',
         ]);
 
+        // Get the barber ID, date, start time, and end time from the request
         $barberId = $request->barber_id;
         $date = $request->date;
         $startTime = $request->start_time;
         $endTime = $request->end_time;
 
+        // Create Carbon instances for the start and end times
         $start = Carbon::createFromFormat('Y-m-d H:i', "$date $startTime");
         $end = Carbon::createFromFormat('Y-m-d H:i', "$date $endTime");
 
@@ -109,42 +115,57 @@ class AppointmentController extends Controller
         // Insert all the appointments into the database
         Appointment::insert($appointments);
 
+        // Redirect to the appointments index with a success message
         return redirect()->route('appointments.index')->with('success', 'Turnos creados exitosamente.');
     }
 
     // Show the form for editing an existing appointment
     public function edit($id)
     {
+        // Find the appointment by ID
         $appointment = Appointment::findOrFail($id);
+
+        // Fetch all barbers for the dropdown
         $barbers = Barber::all();
+
+        // Return the edit view with the appointment and barbers data
         return view('appointments.edit', compact('appointment', 'barbers'));
     }
 
     // Update the specified appointment in the database
     public function update(Request $request, $id)
     {
+        // Validate the incoming request data
         $request->validate([
             'barber_id' => 'required|exists:barbers,id',
             'date' => 'required|date|after_or_equal:' . Carbon::today()->toDateString(),
             'time' => 'required|date_format:H:i',
         ]);
 
+        // Find the appointment by ID
         $appointment = Appointment::findOrFail($id);
+
+        // Update the appointment with the new data
         $appointment->update([
             'barber_id' => $request->barber_id,
             'date' => $request->date,
             'time' => $request->time,
         ]);
 
+        // Redirect to the appointments index with a success message
         return redirect()->route('appointments.index')->with('success', 'Turno actualizado exitosamente.');
     }
 
     // Delete the specified appointment from the database
     public function destroy($id)
     {
+        // Find the appointment by ID
         $appointment = Appointment::findOrFail($id);
+
+        // Delete the appointment record
         $appointment->delete();
 
+        // Redirect to the appointments index with a success message
         return redirect()->route('appointments.index')->with('success', 'Turno eliminado exitosamente.');
     }
 
@@ -272,6 +293,7 @@ class AppointmentController extends Controller
             ->orderBy('date', 'desc')
             ->paginate(10);
 
+        // Return the view with the appointment history
         return view('appointments.history', compact('appointments'));
     }
 }
