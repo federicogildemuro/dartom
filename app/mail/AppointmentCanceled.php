@@ -2,12 +2,12 @@
 
 namespace App\Mail;
 
+use Illuminate\Mail\Mailable;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
 use App\Models\Appointment;
 use App\Models\User;
 use App\Models\Barber;
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
 
 class AppointmentCanceled extends Mailable
 {
