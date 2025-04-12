@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 lg:w-1/2 mx-auto p-5">
+    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 xl:w-1/3 mx-auto p-5">
         <h1 class="text-4xl font-bold text-yellow text-center mb-5">¿Te olvidaste tu contraseña?</h1>
 
         <p class="text-center mb-5">
