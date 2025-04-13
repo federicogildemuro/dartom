@@ -161,7 +161,7 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-5">
-                    <x-primary-button x-on:click="$dispatch('close')">Cancelar</x-primary-button>
+                    <x-primary-button type="button" x-on:click="$dispatch('close')">Cancelar</x-primary-button>
                     <x-danger-button>Borrar cuenta</x-danger-button>
                 </div>
             </form>
