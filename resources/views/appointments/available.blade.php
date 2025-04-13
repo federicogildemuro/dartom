@@ -76,13 +76,17 @@
             <!-- Show filters applied and clear button -->
             <div class="flex flex-col items-center justify-center mb-5">
                 @if (request('barber_id'))
-                    <span class="text-yellow mb-5">Mostrando turnos del barbero:
-                        {{ $barbers->firstWhere('id', request('barber_id'))->name }}</span>
+                    <span class="text-yellow mb-5">
+                        Mostrando turnos del barbero: {{ $barbers->firstWhere('id', request('barber_id'))->name }}
+                    </span>
                 @endif
+
                 @if (request('date'))
-                    <span class="text-yellow mb-5">Mostrando turnos del día:
-                        {{ \Carbon\Carbon::parse(request('date'))->format('d-m-Y') }}</span>
+                    <span class="text-yellow mb-5">
+                        Mostrando turnos del día: {{ \Carbon\Carbon::parse(request('date'))->format('d-m-Y') }}
+                    </span>
                 @endif
+
                 @if (request('barber_id') || request('date'))
                     <form action="{{ route('appointments.available') }}" method="GET">
                         <x-primary-button aria-label="Limpiar filtros aplicados">Limpiar filtros</x-primary-button>
@@ -92,10 +96,10 @@
 
             <!-- If there are no available appointments show a message, otherwise show the table -->
             @if ($availableAppointments->isEmpty())
-                <p class="text-4xl font-bold text-yellow text-center mb-5">No hay turnos disponibles para mostrar.</p>
+                <p class="text-4xl font-bold text-yellow text-center mt-10">No hay turnos disponibles para mostrar.</p>
             @else
                 <div class="overflow-x-auto">
-                    <table class="text-sm sm:text-base w-full mb-5">
+                    <table class="text-sm sm:text-base w-full lg:w-2/3 mx-auto mb-5">
                         <caption class="sr-only">Lista de turnos disponibles para reservar</caption>
                         <thead class="text-yellow">
                             <tr>
@@ -127,7 +131,8 @@
                             @foreach ($availableAppointments as $appointment)
                                 <tr>
                                     <td class="px-2 py-1 sm:px-4 sm:py-2">
-                                        {{ $appointment->barber->name ?? 'No asignado' }}</td>
+                                        {{ $appointment->barber->name ?? 'No asignado' }}
+                                    </td>
 
                                     <td class="px-2 py-1 sm:px-4 sm:py-2 text-center">
                                         {{ \Carbon\Carbon::parse($appointment->date)->format('d-m-Y') }}
@@ -155,7 +160,7 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="text-yellow mb-5">
+                <div class="text-yellow w-full lg:w-2/3 mx-auto mb-5">
                     {{ $availableAppointments->appends(request()->query())->links() }}
                 </div>
             @endif
