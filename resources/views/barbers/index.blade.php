@@ -34,8 +34,6 @@
                             <th class="hidden md:table-cell px-2 py-1 sm:px-4 sm:py-2">Correo</th>
 
                             <th class="hidden sm:table-cell px-2 py-1 sm:px-4 sm:py-2">Foto</th>
-
-                            <th class="px-2 py-1 sm:px-4 sm:py-2">Acciones</th>
                         </tr>
                     </thead>
 
@@ -45,7 +43,8 @@
                                 <td class="text-center px-2 py-1 sm:px-4 sm:py-2">{{ $barber->name }}</td>
 
                                 <td class="hidden md:table-cell text-center px-2 py-1 sm:px-4 sm:py-2">
-                                    {{ $barber->email }}</td>
+                                    {{ $barber->email }}
+                                </td>
 
                                 <td class="hidden sm:table-cell px-2 py-1 sm:px-4 sm:py-2 text-center">
                                     <img src="{{ asset('storage/' . ($barber->photo ?? 'barbers/default.webp')) }}"
@@ -73,10 +72,9 @@
                     class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
                     <div class="bg-black p-5 border-2 border-yellow rounded-lg shadow-lg max-w-sm w-full">
                         <h2 class="text-lg text-yellow font-bold mb-5 text-center">
-                            ¿Estás seguro de que deseas eliminar el barbero?
+                            ¿Estás seguro de que querés eliminar el barbero?
                         </h2>
-                        <p class="mb-5 text-center">Esta acción no se puede deshacer y eliminará todos los turnos
-                            asociados a este barbero.</p>
+                        <p class="mb-5 text-center">Esta acción no se puede deshacer.</p>
 
                         <div class="flex justify-between">
                             <x-primary-button @click="showDeleteModal = false">

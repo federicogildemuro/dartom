@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 lg:w-1/2 mx-auto p-5">
+    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 xl:w-1/3 mx-auto p-5">
         <h1 class="text-4xl font-bold text-yellow text-center mb-5">Editar Barbero</h1>
         <p class="text-center mb-5">Acá podés editar la información de un barbero existente.</p>
 
@@ -49,7 +49,7 @@
                 @endif
             </div>
 
-            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-5 mb-5">
+            <div class="flex items-center justify-between gap-5 my-10">
                 <!-- Cancel Button -->
                 <x-danger-button>
                     <a href="{{ route('barbers.index') }}">Cancelar</a>
