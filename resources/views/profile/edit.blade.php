@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 lg:w-1/2 mx-auto p-5">
+    <section class="flex flex-col items-center justify-start min-h-screen w-full sm:w-2/3 xl:w-1/3 mx-auto p-5">
         <h1 class="text-4xl font-bold text-yellow text-center mb-5">Mi Perfil</h1>
 
         <!-- Profile Information -->
@@ -11,7 +11,7 @@
 
         <!-- Session Status -->
         @if (session('status') == 'profile-updated')
-            <p class="text-green-500 mb-5" role="status" aria-live="polite">
+            <p class="text-green-500 text-center mb-5" role="status" aria-live="polite">
                 Tu información de perfil ha sido actualizada correctamente.
             </p>
         @endif
@@ -85,7 +85,7 @@
 
         <!-- Session Status -->
         @if (session('status') == 'password-updated')
-            <p class="text-green-500 mb-5" role="status" aria-live="polite">
+            <p class="text-green-500 text-center mb-5" role="status" aria-live="polite">
                 Tu contraseña ha sido actualizada correctamente.
             </p>
         @endif
@@ -150,10 +150,10 @@
                 <h2 class="text-2xl font-bold text-yellow text-center mb-5">
                     ¿Estás seguro de que querés eliminar tu cuenta?
                 </h2>
-                <p class="text-center mb-5">
-                    Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán eliminados permanentemente.
-                    Ingresá tu contraseña para confirmar que querés eliminar tu cuenta de forma permanente.
-                </p>
+                <p class="text-center mb-5"> Esta acción es irreversible y eliminará permanentemente todos tus datos. No
+                    podrás recuperar tu cuenta ni la información asociada a ella.</p>
+                <p class="text-center mb-5">Ingresá tu contraseña para confirmar que querés eliminar tu cuenta de forma
+                    permanente.</p>
 
                 <div class="mb-5">
                     <x-text-input id="password" name="password" type="password" class="mt-2 block w-full" />
