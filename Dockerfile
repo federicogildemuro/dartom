@@ -1,5 +1,5 @@
-# Use an official PHP image with FPM (FastCGI Process Manager)
-FROM php:8.1-fpm
+# Use an official PHP image with FPM (FastCGI Process Manager) for PHP 8.2
+FROM php:8.2-fpm
 
 # Install dependencies required for Laravel (like GD, Composer, bcmath, etc.)
 RUN apt-get update && apt-get install -y \
