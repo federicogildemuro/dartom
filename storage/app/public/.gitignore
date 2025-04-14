@@ -1,2 +1,7 @@
 *
 !.gitignore
+!daro-tommy.webp
+!hero-background.webp
+!logo.webp
+!barbers/
+!barbers/**
