@@ -1,7 +1,7 @@
 <header x-data="{ open: false }" class="fixed top-0 left-0 w-full h-32 z-50 bg-black" role="banner">
     <nav class="flex justify-between items-center px-5 sm:px-10" aria-label="Navegación principal">
         <!-- Logo -->
-        <a href="{{ route('home') }}" class="hover:scale-110 transition duration-150 ease-in-out">
+        <a href="{{ route('home') . '#home' }}" class="hover:scale-110 transition duration-150 ease-in-out">
             <img src="{{ asset('storage/logo.webp') }}" alt="Logo de Dartom Barbería" class="h-32 object-contain">
         </a>
 
@@ -9,11 +9,11 @@
         <div class="hidden sm:inline-flex gap-10 items-center">
             <!-- Links for non-admin users (unauthenticated or user role) -->
             @if (!Auth::user() || Auth::user()->role !== 'admin')
-                <x-nav-link :href="route('home')" :active="request()->routeIs('home')">Inicio</x-nav-link>
+                <x-nav-link :href="route('home') . '#home'" :active="request()->routeIs('home')">Inicio</x-nav-link>
 
-                <x-nav-link :href="'#about'" :active="request()->routeIs('about')">Nosotros</x-nav-link>
+                <x-nav-link :href="route('home') . '#about'" :active="request()->routeIs('about')">Nosotros</x-nav-link>
 
-                <x-nav-link :href="'#contact'" :active="request()->routeIs('contact')">Contacto</x-nav-link>
+                <x-nav-link :href="route('home') . '#contact'" :active="request()->routeIs('contact')">Contacto</x-nav-link>
             @endif
 
             <!-- Links for authenticated users -->
@@ -72,11 +72,11 @@
         aria-label="Navegación móvil">
         <!-- Links for non-admin users (unauthenticated or user role) -->
         @if (!Auth::user() || Auth::user()->role !== 'admin')
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">Inicio</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home') . '#home'" :active="request()->routeIs('home')">Inicio</x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="'#about'" :active="request()->routeIs('about')">Nosotros</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home') . '#about'" :active="request()->routeIs('about')">Nosotros</x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="'#contact'" :active="request()->routeIs('contact')">Contacto</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home') . '#contact'" :active="request()->routeIs('contact')">Contacto</x-responsive-nav-link>
         @endif
 
         <!-- Links for authenticated users -->
