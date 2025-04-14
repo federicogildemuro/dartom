@@ -7,13 +7,13 @@
             Te ponés como loquita si Daro o Tommy no te responden los mensajes?
         </h1>
 
-        <p class="text-2xl md:text-3xl" data-aos="fade-up" data-aos-delay="500">
+        <p class="text-2xl md:text-3xl" data-aos="zoom-in" data-aos-delay="500">
             Ahora también podés sacar turno desde esta página
         </p>
 
         <a href="{{ route('appointments.available') }}"
             class="text-2xl md:text-3xl bg-yellow px-6 py-3 rounded-lg hover:bg-black hover:text-yellow transition duration-150 ease-in-out"
-            data-aos="fade-up" data-aos-delay="1000">
+            data-aos="zoom-in" data-aos-delay="1000">
             Click acá para que no te claven el visto
         </a>
     </div>

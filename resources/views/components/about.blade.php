@@ -5,7 +5,7 @@
     </div>
 
     <div class="md:w-1/2 text-center md:text-left sm:max-w-lg">
-        <h2 id="about-title" class="text-4xl md:text-5xl font-bold text-yellow mb-5" data-aos="zoom-in">Somos Dartom</h2>
+        <h2 id="about-title" class="text-4xl md:text-5xl font-bold text-yellow mb-5" data-aos="fade-up">Somos Dartom</h2>
 
         <p class="text-lg md:text-xl mb-5" data-aos="fade-up" data-aos-delay="250">
             Te vamos a dejar como un campeón después de cada corte, al menos esa es la intención. Si alguna vez pensaste
